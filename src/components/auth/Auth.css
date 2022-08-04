@@ -46,7 +46,7 @@ fieldset {
 /* CSS */
 
 .link--register {
-    background-image: linear-gradient(rgb(204, 165, 209), rgb(162, 162, 232));
+    background-image: linear-gradient(#FFD91F, #FFD91F);
     border: 0;
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
