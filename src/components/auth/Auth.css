@@ -52,7 +52,7 @@ fieldset {
     background-image: url('./logo.png');
     z-index: 1;
     min-height: 25rem;
-    min-width: 45rem;
+    min-width: 25rem;
     padding: 0 5rem;
     background-color: hsla(0,0%,100%,0.75);
     background-blend-mode: overlay;
