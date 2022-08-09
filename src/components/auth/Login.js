@@ -1,5 +1,6 @@
 import React, { useRef } from "react"
-import { Link, useHistory } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { loginUser } from "../../managers/AuthManager"
 import "./Auth.css"
 
 
@@ -7,27 +8,20 @@ export const Login = () => {
     const username = useRef()
     const password = useRef()
     const invalidDialog = useRef()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const handleLogin = (e) => {
         e.preventDefault()
-
-        return fetch("http://127.0.0.1:8000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                username: username.current.value,
-                password: password.current.value
-            })
-        })
-            .then(res => res.json())
+        const user = {
+            username: username.current.value,
+            password: password.current.value
+        }
+        loginUser(user)
             .then(res => {
                 if ("valid" in res && res.valid && "token" in res) {
                     localStorage.setItem("lu_token", res.token)
-                    history.push("/")
+                    localStorage.setItem("userId", res.currentUser)
+                    navigate("/")
                 }
                 else {
                     invalidDialog.current.showModal()
@@ -46,8 +40,8 @@ export const Login = () => {
                     <h1>Level Up</h1>
                     <h2>Please sign in</h2>
                     <fieldset>
-                        <label htmlFor="inputUsername"> Username </label>
-                        <input ref={username} type="username" id="username" className="form-control" placeholder="Username" required autoFocus />
+                        <label htmlFor="inputUsername"> Username address </label>
+                        <input ref={username} type="username" id="username" className="form-control" placeholder="Username address" required autoFocus />
                     </fieldset>
                     <fieldset>
                         <label htmlFor="inputPassword"> Password </label>

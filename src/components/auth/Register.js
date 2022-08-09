@@ -1,5 +1,6 @@
 import React, { useRef } from "react"
-import { Link, useHistory } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { registerUser } from "../../managers/AuthManager"
 import "./Auth.css"
 
 export const Register = () => {
@@ -10,7 +11,7 @@ export const Register = () => {
     const password = useRef()
     const verifyPassword = useRef()
     const passwordDialog = useRef()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const handleRegister = (e) => {
         e.preventDefault()
@@ -24,19 +25,12 @@ export const Register = () => {
                 "password": password.current.value
             }
 
-            return fetch("http://127.0.0.1:8000/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify(newUser)
-            })
-                .then(res => res.json())
+            registerUser(newUser)
                 .then(res => {
                     if ("token" in res) {
                         localStorage.setItem("lu_token", res.token)
-                        history.push("/")
+                        localStorage.setItem("userId", res.currentUser)
+                        navigate("/")
                     }
                 })
         } else {
@@ -73,9 +67,9 @@ export const Register = () => {
                 <fieldset>
                     <label htmlFor="verifyPassword"> Verify Password </label>
                     <input ref={verifyPassword} type="password" name="verifyPassword" className="form-control" placeholder="Verify password" required />
-                </fieldset> 
+                </fieldset>
                 <fieldset>
-                    <label htmlFor="bio"> Bio</label>
+                    <label htmlFor="verifyPassword"> Verify Password </label>
                     <textarea ref={bio} name="bio" className="form-control" placeholder="Let other gamers know a little bit about you..." />
                 </fieldset>
                 <fieldset style={{
